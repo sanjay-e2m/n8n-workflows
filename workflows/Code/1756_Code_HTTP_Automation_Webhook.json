@@ -21,7 +21,7 @@
         "options": {},
         "jsonBody": "={\n  \"model\": \"sonar-deep-research\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Conduct an in-depth research on '{{ $json.output.parseJson().title }}', covering essential topics, recommended resources, and best practices. Additionally, please address these improvements: '{{ $json.output.parseJson().improvements }}'. The returned data should be at least 1000 words and use a combination of headers, tables, bold, and italics\"\n    }\n  ],\n  \"max_tokens\": 60000,\n  \"temperature\": 0.7,\n  \"top_p\": 0.9,\n  \"top_k\": 50,\n  \"stream\": false,\n  \"presence_penalty\": 0,\n  \"frequency_penalty\": 0\n}",
         "sendBody": true,
-        "jsonHeaders": "{\n  \"Authorization\": \"Bearer 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\",\n  \"Content-Type\": \"application/json\"\n}",
+        "jsonHeaders": "{\n  \"Authorization\": \"Bearer \",\n  \"Content-Type\": \"application/json\"\n}",
         "sendHeaders": true,
         "specifyBody": "json",
         "specifyHeaders": "json"
