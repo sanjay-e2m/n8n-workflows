@@ -1,0 +1,2433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚡ N8N Workflow Documentation</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    /* Modern CSS Reset and Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      /* Enhanced color system */
+      --primary-50: #f0f9ff;
+      --primary-100: #e0f2fe;
+      --primary-200: #bae6fd;
+      --primary-300: #7dd3fc;
+      --primary-400: #38bdf8;
+      --primary-500: #0ea5e9;
+      --primary-600: #0284c7;
+      --primary-700: #0369a1;
+      --primary-800: #075985;
+      --primary-900: #0c4a6e;
+      --primary: #0ea5e9;
+      --primary-dark: #0284c7;
+
+      /* Status colors */
+      --success: #10b981;
+      --success-bg: #d1fae5;
+      --warning: #f59e0b;
+      --warning-bg: #fef3c7;
+      --error: #ef4444;
+      --error-bg: #fee2e2;
+
+      /* Neutral colors */
+      --white: #ffffff;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+
+      /* Light theme */
+      --bg: #fafbfc;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #f8fafc;
+      --bg-accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --text: #1a202c;
+      --text-secondary: #4a5568;
+      --text-muted: #718096;
+      --border: #e2e8f0;
+      --border-light: #f1f5f9;
+
+      /* Shadows */
+      --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+      --shadow-colored: 0 20px 25px -5px rgb(59 130 246 / 0.1), 0 8px 10px -6px rgb(59 130 246 / 0.1);
+
+      /* Radius */
+      --radius-sm: 0.375rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --radius-2xl: 1.5rem;
+
+      /* Transitions */
+      --transition-base: all 0.2s ease-in-out;
+      --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+      /* Layout variables */
+      --sidebar-width: 440px;
+      --content-gap: 20px;
+      --navbar-height: 64px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0d1117;
+      --bg-secondary: #161b22;
+      --bg-tertiary: #21262d;
+      --bg-accent: linear-gradient(135deg, #4c51bf 0%, #553c9a 100%);
+      --text: #f0f6fc;
+      --text-secondary: #c9d1d9;
+      --text-muted: #8b949e;
+      --border: #30363d;
+      --border-light: #21262d;
+      --shadow-colored: 0 20px 25px -5px rgb(99 102 241 / 0.25), 0 8px 10px -6px rgb(99 102 241 / 0.25);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 6rem;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-weight: 400;
+      transition: var(--transition-smooth);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(circle at 15% 50%, rgb(120 119 198 / 0.08), transparent 50%),
+        radial-gradient(circle at 85% 20%, rgb(255 119 198 / 0.08), transparent 50%),
+        radial-gradient(circle at 40% 80%, rgb(120 219 255 / 0.08), transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Make navbar container full-width */
+    .header .container {
+      max-width: none;
+      width: 100%;
+      padding-left: 2rem;
+      padding-right: 2rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Enhanced Header */
+    .header {
+      background: var(--bg-secondary);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 0;
+      /* compact as navbar */
+      position: relative;
+      overflow: hidden;
+      position: sticky;
+      /* sticky navbar on top */
+      top: 0;
+      z-index: 300;
+      box-shadow: var(--shadow-sm);
+      min-height: var(--navbar-height);
+      display: flex;
+      align-items: center;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--bg-accent);
+      opacity: 0.05;
+      z-index: -1;
+    }
+
+    .title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, var(--primary-600), var(--primary-400));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.02em;
+      transition: var(--transition-smooth);
+      animation: fadeInUp 0.8s ease-out;
+      line-height: 1.1;
+    }
+
+    .title:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 2.5rem;
+      font-weight: 400;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+      max-width: 600px;
+    }
+
+    /* Compact spacing when title/subtitle are used inside the sticky navbar */
+    .header .title {
+      margin-bottom: 0;
+    }
+
+    .header .subtitle {
+      margin: 0;
+    }
+
+    .header .branding {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      min-height: var(--navbar-height);
+      text-align: center;
+    }
+
+    .stats {
+      display: flex;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 0 auto;
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+
+    .stat {
+      text-align: center;
+      /* padding: 1.75rem; */
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      transition: var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .stat>* {
+      flex: 1 1 200px;
+      /* min width 200px, expand equally */
+      max-width: 1fr;
+      /* keeps them balanced */
+    }
+
+    .stat::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-500), var(--primary-400));
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+
+    .stat:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-xl);
+      border-color: var(--primary-200);
+    }
+
+    .stat:hover::before {
+      transform: translateX(0);
+    }
+
+    .stat-number {
+      display: block;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--primary-600);
+      margin-bottom: 0.5rem;
+      transition: var(--transition-smooth);
+    }
+
+    .stat:hover .stat-number {
+      transform: scale(1.05);
+    }
+
+    .stat-label {
+      font-size: 0.5rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+
+    /* Enhanced Controls */
+    .controls {
+      background: var(--bg-secondary);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 1.75rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .search-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 1.125rem 1.5rem 1.125rem 3.5rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-2xl);
+      background: var(--bg-tertiary);
+      color: var(--text);
+      font-size: 1rem;
+      font-weight: 500;
+      min-width: 320px;
+      transition: var(--transition-smooth);
+      box-shadow: var(--shadow-sm);
+      margin-top: 20px;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary-500);
+      background: var(--bg-secondary);
+      box-shadow: var(--shadow-colored);
+      transform: translateY(-2px);
+    }
+
+    .search-input::placeholder {
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .search-section::before {
+      content: '\f002';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 600;
+      position: absolute;
+      left: 1.5rem;
+      top: 63%;
+      transform: translateY(-50%);
+      font-size: 1.125rem;
+      color: var(--text-muted);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .filter-section {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.875rem 1.125rem;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-light);
+      transition: var(--transition-base);
+    }
+
+    .filter-group:hover {
+      background: var(--bg-secondary);
+      border-color: var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .filter-group label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .filter-group select {
+      padding: 0.625rem 0.875rem;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition-base);
+      min-width: 130px;
+    }
+
+    .filter-group select:focus {
+      outline: none;
+      border-color: var(--primary-500);
+      box-shadow: 0 0 0 3px rgb(14 165 233 / 0.1);
+    }
+
+    .filter-group input[type="checkbox"] {
+      width: 1.125rem;
+      height: 1.125rem;
+      accent-color: var(--primary-500);
+      cursor: pointer;
+    }
+
+    .theme-toggle {
+      background: var(--bg-tertiary);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 0.875rem 1.5rem;
+      cursor: pointer;
+      font-size: 1.25rem;
+      margin-left: auto;
+      transition: var(--transition-smooth);
+      box-shadow: var(--shadow-sm);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 54px;
+      height: 54px;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-2px) rotate(12deg);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary-300);
+      background: var(--bg-secondary);
+    }
+
+    .results-info {
+      margin-top: 1.5rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      padding: 0.875rem 1.125rem;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-md);
+      border-left: 4px solid var(--primary-500);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .results-info::before {
+      content: '\f0b0';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 600;
+    }
+
+    /* Main Content */
+    .main {
+      padding: 3rem 0;
+    }
+
+    /* Two-column layout wrapper below navbar */
+    .content-row {
+      display: block;
+    }
+
+    /* Enhanced States */
+    .state {
+      text-align: center;
+      padding: 5rem 2rem;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .state .icon {
+      font-size: 5rem;
+      margin-bottom: 2rem;
+      display: block;
+      opacity: 0.7;
+    }
+
+    .state.loading .icon {
+      animation: bounce 1.5s ease-in-out infinite;
+    }
+
+    .state h3 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .state p {
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      font-size: 1.125rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .retry-btn {
+      background: linear-gradient(135deg, var(--primary-600), var(--primary-500));
+      color: white;
+      border: none;
+      padding: 1rem 2.25rem;
+      border-radius: var(--radius-xl);
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: var(--transition-smooth);
+      box-shadow: var(--shadow-lg);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .retry-btn::before {
+      content: '\f01e';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 600;
+    }
+
+    .retry-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-xl);
+      background: linear-gradient(135deg, var(--primary-700), var(--primary-600));
+    }
+
+    /* Enhanced Workflow Grid */
+    .workflow-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 2rem;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .workflow-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 2.25rem;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition-smooth);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .workflow-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-500), var(--primary-400));
+      transform: scaleX(0);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-origin: left;
+    }
+
+    .workflow-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-2xl);
+      border-color: var(--primary-200);
+    }
+
+    .workflow-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .workflow-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .workflow-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .status-active {
+      background: var(--success);
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    .status-active::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      border: 2px solid var(--success);
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: ping 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    .status-inactive {
+      background: var(--text-muted);
+    }
+
+    .complexity-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .complexity-low {
+      background: var(--success);
+    }
+
+    .complexity-medium {
+      background: var(--warning);
+    }
+
+    .complexity-high {
+      background: var(--error);
+    }
+
+    .trigger-badge {
+      background: linear-gradient(135deg, var(--primary-600), var(--primary-500));
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-lg);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-base);
+    }
+
+    .workflow-card:hover .trigger-badge {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .category-badge {
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-md);
+      font-size: 0.75rem;
+      border: 1px solid var(--border);
+      font-weight: 600;
+      transition: var(--transition-base);
+    }
+
+    .workflow-card:hover .category-badge {
+      background: var(--primary-50);
+      color: var(--primary-700);
+      border-color: var(--primary-200);
+    }
+
+    .workflow-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.875rem;
+      color: var(--text);
+      line-height: 1.3;
+      transition: color 0.3s ease;
+    }
+
+    .workflow-card:hover .workflow-title {
+      color: var(--primary-600);
+    }
+
+    .workflow-description {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+      font-size: 0.95rem;
+      flex-grow: 1;
+    }
+
+    .workflow-integrations {
+      margin-top: auto;
+    }
+
+    .integrations-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .integrations-title::before {
+      content: '🔗';
+      font-size: 1rem;
+    }
+
+    .integrations-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .integration-tag {
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      padding: 0.375rem 0.75rem;
+      border-radius: var(--radius-md);
+      font-size: 0.75rem;
+      border: 1px solid var(--border-light);
+      font-weight: 500;
+      transition: var(--transition-base);
+    }
+
+    .workflow-card:hover .integration-tag {
+      background: var(--primary-50);
+      color: var(--primary-700);
+      border-color: var(--primary-200);
+      transform: translateY(-1px);
+    }
+
+    .workflow-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .action-btn {
+      padding: 0.75rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--bg-tertiary);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .action-btn:hover {
+      background: var(--bg-secondary);
+      border-color: var(--primary-300);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .action-btn.primary {
+      background: linear-gradient(135deg, var(--primary-600), var(--primary-500));
+      color: white;
+      border-color: var(--primary-600);
+      box-shadow: var(--shadow-md);
+    }
+
+    .action-btn.primary:hover {
+      background: linear-gradient(135deg, var(--primary-700), var(--primary-600));
+      box-shadow: var(--shadow-xl);
+    }
+
+    /* Load More */
+    .load-more {
+      text-align: center;
+      margin-top: 3.5rem;
+    }
+
+    .load-more-btn {
+      background: linear-gradient(135deg, var(--primary-600), var(--primary-500));
+      color: white;
+      border: none;
+      padding: 1.125rem 2.75rem;
+      border-radius: var(--radius-xl);
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: var(--transition-smooth);
+      box-shadow: var(--shadow-lg);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .load-more-btn::before {
+      content: '\f063';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 600;
+    }
+
+    .load-more-btn:hover {
+      background: linear-gradient(135deg, var(--primary-700), var(--primary-600));
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    /* Enhanced Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1.5rem;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .modal-content {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-xl);
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: var(--shadow-2xl);
+      border: 1px solid var(--border);
+      animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .modal-header {
+      padding: 2rem 2rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .modal-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .modal-title::before {
+      content: '⚡';
+      font-size: 1.5rem;
+    }
+
+    .modal-close {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      color: var(--text-secondary);
+      transition: var(--transition-smooth);
+      width: 2.75rem;
+      height: 2.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close:hover {
+      background: var(--error-bg);
+      color: var(--error);
+      border-color: var(--error);
+      transform: scale(1.1) rotate(90deg);
+    }
+
+    .modal-body {
+      padding: 2rem;
+    }
+
+    .workflow-detail {
+      margin-bottom: 2.25rem;
+    }
+
+    .workflow-detail h4 {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .workflow-detail h4::before {
+      content: '';
+      width: 4px;
+      height: 1.25rem;
+      background: var(--primary-500);
+      border-radius: 2px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .copy-btn {
+      background: var(--primary-500);
+      color: white;
+      border: none;
+      padding: 0.625rem 1.125rem;
+      border-radius: var(--radius-md);
+      font-size: 0.8125rem;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .copy-btn:hover {
+      background: var(--primary-600);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .copy-btn.copied {
+      background: var(--success);
+      animation: bounce 0.5s ease;
+    }
+
+    .copy-btn.copied:hover {
+      background: var(--success);
+    }
+
+    .json-viewer {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+      font-size: 0.875rem;
+      overflow-x: auto;
+      max-height: 400px;
+      white-space: pre-wrap;
+      line-height: 1.5;
+      box-shadow: inset var(--shadow-sm);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Mermaid diagram styling */
+    .mermaid {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      text-align: center;
+      overflow-x: auto;
+      box-shadow: inset var(--shadow-sm);
+    }
+
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Floating action button for mobile */
+    .fab {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-600), var(--primary-500));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-xl);
+      cursor: pointer;
+      z-index: 90;
+      transition: var(--transition-smooth);
+      font-size: 1.5rem;
+      border: none;
+    }
+
+    .fab:hover {
+      transform: translateY(-5px) rotate(180deg);
+      box-shadow: var(--shadow-2xl);
+    }
+
+    /* Back to top button */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-lg);
+      cursor: pointer;
+      z-index: 90;
+      transition: var(--transition-smooth);
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-5px);
+      background: var(--primary-500);
+      color: white;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .workflow-grid {
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .title {
+        font-size: 2.5rem;
+      }
+
+      .subtitle {
+        font-size: 1.125rem;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+
+      .stat {
+        padding: 1.5rem 1rem;
+      }
+
+      .stat-number {
+        font-size: 2.25rem;
+      }
+
+      .search-section,
+      .filter-section {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .search-input {
+        min-width: auto;
+      }
+
+      .theme-toggle {
+        margin-left: 0;
+        align-self: flex-start;
+        width: 100%;
+        margin-top: 1rem;
+      }
+
+      .workflow-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .workflow-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+
+      .modal {
+        padding: 1rem;
+      }
+
+      .modal-content {
+        max-height: 95vh;
+      }
+
+      .modal-header {
+        padding: 1.5rem 1.5rem 1.25rem;
+      }
+
+      .modal-body {
+        padding: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header {
+        padding: 2.5rem 0 2rem;
+      }
+
+      .title {
+        font-size: 2rem;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+
+      .workflow-card {
+        padding: 1.75rem;
+      }
+
+      .workflow-actions {
+        flex-direction: column;
+      }
+
+      .action-btn {
+        justify-content: center;
+      }
+    }
+
+    /* Desktop layout: convert top controls into a left sidebar (CSS-only) */
+    @media (min-width: 1200px) {
+
+      /* Make left sidebar full-height fixed */
+      #app {
+        display: block;
+      }
+
+     .controls {
+  position: fixed;
+  top: 66px;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  z-index: 200;
+  padding: 1.25rem 1rem;
+  border-right: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: 0;
+  box-shadow: var(--shadow-md);
+  background: linear-gradient(180deg, var(--bg-secondary), var(--bg-tertiary));
+  overflow-y: auto;
+  overflow-x: hidden; /* prevent horizontal scrollbar */
+}
+
+.controls > .container {
+  max-width: 100%;
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* spacing between blocks */
+}
+
+/* Stats section */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.stat {
+  flex: 1 1 calc(50% - 1rem); /* two per row */
+  background: #fff;
+  border-radius: 0.8rem;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.stat-number {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--primary, #0a66c2);
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.85rem;
+  color: #555;
+  margin-top: 0.3rem;
+}
+
+      .search-section {
+        margin-bottom: 1rem;
+      }
+
+      .filter-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .filter-group {
+        width: 100%;
+      }
+
+      .theme-toggle {
+        margin-left: 0;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .results-info {
+        margin-top: 0.5rem;
+      }
+
+      /* Push right-side content to make room for fixed sidebar */
+      /* Use a row layout below the navbar */
+      .content-row {
+        display: flex;
+      }
+
+      .header {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .main {
+        margin-left: calc(var(--sidebar-width) + var(--content-gap));
+        padding-top: 1rem;
+      }
+
+      .main {
+        padding-top: 1rem;
+      }
+
+      /* Use full width for header and main containers on desktop */
+      .header .container,
+      .main .container {
+        max-width: none;
+        width: 100%;
+        padding-left: 2rem;
+        padding-right: 2rem;
+      }
+
+      /* Ensure grid adapts comfortably within remaining width */
+      .workflow-grid {
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes bounce {
+
+      0%,
+      20%,
+      53%,
+      80%,
+      100% {
+        transform: translate3d(0, 0, 0);
+      }
+
+      40%,
+      43% {
+        transform: translate3d(0, -15px, 0);
+      }
+
+      70% {
+        transform: translate3d(0, -7px, 0);
+      }
+
+      90% {
+        transform: translate3d(0, -3px, 0);
+      }
+    }
+
+    @keyframes ping {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      75%,
+      100% {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.8;
+      }
+
+      50% {
+        transform: scale(1.06);
+        opacity: 1;
+      }
+    }
+
+    @keyframes dotPulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.85;
+      }
+
+      50% {
+        transform: scale(1.25);
+        opacity: 1;
+      }
+    }
+
+    /* Focus styles for accessibility */
+    :focus-visible {
+      outline: 2px solid var(--primary-500);
+      outline-offset: 2px;
+    }
+
+    /* Scrollbar styling */
+    .json-viewer,
+    .modal-content {
+      scrollbar-gutter: stable;
+    }
+
+    .json-viewer::-webkit-scrollbar,
+    .modal-content::-webkit-scrollbar {
+      height: 10px;
+      width: 10px;
+    }
+
+    .json-viewer::-webkit-scrollbar-thumb,
+    .modal-content::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 999px;
+    }
+
+    .json-viewer:hover::-webkit-scrollbar-thumb,
+    .modal-content:hover::-webkit-scrollbar-thumb {
+      background: var(--text-muted);
+    }
+
+    /* Stronger visible theme and motions */
+    body {
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgb(59 130 246 / 0.06), transparent 60%),
+        radial-gradient(1200px 600px at 110% 10%, rgb(16 185 129 / 0.05), transparent 60%),
+        var(--bg);
+    }
+
+    .title {
+      background: linear-gradient(90deg, var(--primary), #06b6d4);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      transition: filter 0.3s ease;
+    }
+
+    .title:hover {
+      filter: brightness(1.1);
+    }
+
+    .workflow-card:hover {
+      transform: translateY(-4px);
+      background:
+        linear-gradient(var(--bg-secondary), var(--bg-secondary)) padding-box,
+        linear-gradient(135deg, var(--primary), #06b6d4) border-box;
+      border: 1px solid transparent;
+    }
+
+    .status-active {
+      animation: dotPulse 1.4s ease-in-out infinite;
+    }
+
+    .action-btn.primary:hover {
+      box-shadow: 0 8px 24px -8px rgb(37 99 235 / 0.45);
+    }
+
+    /* Loading skeleton animation */
+    .skeleton {
+      background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--border-light) 50%, var(--bg-tertiary) 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+      border-radius: var(--radius-md);
+    }
+
+    @keyframes loading {
+      0% {
+        background-position: 200% 0;
+      }
+
+      100% {
+        background-position: -200% 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <!-- Header (Sticky Navbar on Right) -->
+    <header class="header">
+      <div class="container">
+        <div class="branding">
+          <h1 class="title">⚡ N8N Workflow Documentation</h1>
+          <p class="subtitle">Lightning-fast workflow browser with instant search, filtering, and visualization</p>
+        </div>
+      </div>
+    </header>
+    <!-- Main Content -->
+    <div class="controls">
+      <div class="container">
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-number" id="totalCount">0</span>
+            <span class="stat-label">Total Workflows</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number" id="activeCount">0</span>
+            <span class="stat-label">Active</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number" id="nodeCount">0</span>
+            <span class="stat-label">Total Nodes</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number" id="integrationCount">0</span>
+            <span class="stat-label">Integrations</span>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="search-section">
+          <input type="text" id="searchInput" class="search-input"
+            placeholder="Search workflows by name, description, or integration...">
+        </div>
+
+        <div class="filter-section">
+          <div class="filter-group">
+            <label for="triggerFilter">Trigger:</label>
+            <select id="triggerFilter">
+              <option value="all">All Types</option>
+              <option value="Webhook">Webhook</option>
+              <option value="Scheduled">Scheduled</option>
+              <option value="Manual">Manual</option>
+              <option value="Complex">Complex</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="complexityFilter">Complexity:</label>
+            <select id="complexityFilter">
+              <option value="all">All Levels</option>
+              <option value="low">Low (≤5 nodes)</option>
+              <option value="medium">Medium (6-15 nodes)</option>
+              <option value="high">High (16+ nodes)</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="categoryFilter">Category:</label>
+            <select id="categoryFilter">
+              <option value="all">All Categories</option>
+              <!-- Categories will be populated dynamically -->
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label>
+              <input type="checkbox" id="activeOnly">
+              Active only
+            </label>
+          </div>
+
+          <button id="themeToggle" class="theme-toggle">🌙</button>
+        </div>
+
+        <div class="results-info">
+          <span id="resultsCount">Loading workflows...</span>
+        </div>
+      </div>
+    </div>
+    <main class="main">
+      <div class="container">
+        <!-- Loading State -->
+        <div id="loadingState" class="state loading">
+          <div class="icon"><i class="fas fa-bolt"></i></div>
+          <h3>Loading workflows...</h3>
+          <p>Please wait while we fetch your workflow data</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="state error hidden">
+          <div class="icon"><i class="fas fa-exclamation-circle"></i></div>
+          <h3>Error Loading Workflows</h3>
+          <p id="errorMessage">Something went wrong. Please try again.</p>
+          <button id="retryBtn" class="retry-btn">Retry</button>
+        </div>
+
+        <!-- No Results State -->
+        <div id="noResultsState" class="state hidden">
+          <div class="icon"><i class="fas fa-search"></i></div>
+          <h3>No workflows found</h3>
+          <p>Try adjusting your search terms or filters</p>
+        </div>
+
+        <!-- Workflows Grid -->
+        <div id="workflowGrid" class="workflow-grid hidden">
+          <!-- Workflow cards will be inserted here -->
+        </div>
+
+        <!-- Load More -->
+        <div id="loadMoreContainer" class="load-more hidden">
+          <button id="loadMoreBtn" class="load-more-btn">Load More Workflows</button>
+        </div>
+      </div>
+    </main>
+
+
+    <!-- Back to top button -->
+    <button id="backToTop" class="back-to-top">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Workflow Detail Modal -->
+    <div id="workflowModal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="modalTitle">Workflow Details</h2>
+          <button class="modal-close" id="modalClose">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="workflow-detail">
+            <h4>Description</h4>
+            <p id="modalDescription">Loading...</p>
+          </div>
+
+          <div class="workflow-detail">
+            <h4>Statistics</h4>
+            <div id="modalStats">Loading...</div>
+          </div>
+
+          <div class="workflow-detail">
+            <h4>Integrations</h4>
+            <div id="modalIntegrations">Loading...</div>
+          </div>
+
+          <div class="workflow-detail">
+            <h4>Actions</h4>
+            <div class="workflow-actions">
+              <a id="downloadBtn" class="action-btn primary" href="#" download><i class="fas fa-download"></i> Download
+                JSON</a>
+              <button id="viewJsonBtn" class="action-btn"><i class="fas fa-code"></i> View JSON</button>
+              <button id="viewDiagramBtn" class="action-btn"><i class="fas fa-project-diagram"></i> View
+                Diagram</button>
+            </div>
+          </div>
+
+          <div class="workflow-detail hidden" id="jsonSection">
+            <div class="section-header">
+              <h4>Workflow JSON</h4>
+              <button id="copyJsonBtn" class="copy-btn" title="Copy JSON to clipboard">
+                <i class="fas fa-copy"></i> Copy
+              </button>
+            </div>
+            <div class="json-viewer" id="jsonViewer">Loading...</div>
+          </div>
+
+          <div class="workflow-detail hidden" id="diagramSection">
+            <div class="section-header">
+              <h4>Workflow Diagram</h4>
+              <button id="copyDiagramBtn" class="copy-btn" title="Copy diagram code to clipboard">
+                <i class="fas fa-copy"></i> Copy
+              </button>
+            </div>
+            <div id="diagramViewer">Loading diagram...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Enhanced Workflow App with Full Functionality
+    class WorkflowApp {
+      constructor() {
+        this.state = {
+          workflows: [],
+          currentPage: 1,
+          totalPages: 1,
+          totalCount: 0,
+          perPage: 20,
+          isLoading: false,
+          searchQuery: '',
+          filters: {
+            trigger: 'all',
+            complexity: 'all',
+            category: 'all',
+            activeOnly: false
+          },
+          categories: [],
+          categoryMap: new Map()
+        };
+
+        this.elements = {
+          searchInput: document.getElementById('searchInput'),
+          triggerFilter: document.getElementById('triggerFilter'),
+          complexityFilter: document.getElementById('complexityFilter'),
+          categoryFilter: document.getElementById('categoryFilter'),
+          activeOnlyFilter: document.getElementById('activeOnly'),
+          themeToggle: document.getElementById('themeToggle'),
+          resultsCount: document.getElementById('resultsCount'),
+          workflowGrid: document.getElementById('workflowGrid'),
+          loadMoreContainer: document.getElementById('loadMoreContainer'),
+          loadMoreBtn: document.getElementById('loadMoreBtn'),
+          loadingState: document.getElementById('loadingState'),
+          errorState: document.getElementById('errorState'),
+          noResultsState: document.getElementById('noResultsState'),
+          errorMessage: document.getElementById('errorMessage'),
+          retryBtn: document.getElementById('retryBtn'),
+          totalCount: document.getElementById('totalCount'),
+          activeCount: document.getElementById('activeCount'),
+          nodeCount: document.getElementById('nodeCount'),
+          integrationCount: document.getElementById('integrationCount'),
+          backToTop: document.getElementById('backToTop'),
+          // Modal elements
+          workflowModal: document.getElementById('workflowModal'),
+          modalTitle: document.getElementById('modalTitle'),
+          modalClose: document.getElementById('modalClose'),
+          modalDescription: document.getElementById('modalDescription'),
+          modalStats: document.getElementById('modalStats'),
+          modalIntegrations: document.getElementById('modalIntegrations'),
+          downloadBtn: document.getElementById('downloadBtn'),
+          viewJsonBtn: document.getElementById('viewJsonBtn'),
+          viewDiagramBtn: document.getElementById('viewDiagramBtn'),
+          jsonSection: document.getElementById('jsonSection'),
+          jsonViewer: document.getElementById('jsonViewer'),
+          diagramSection: document.getElementById('diagramSection'),
+          diagramViewer: document.getElementById('diagramViewer'),
+          copyJsonBtn: document.getElementById('copyJsonBtn'),
+          copyDiagramBtn: document.getElementById('copyDiagramBtn')
+        };
+
+        this.searchDebounceTimer = null;
+        this.currentWorkflow = null;
+        this.currentJsonData = null;
+        this.currentDiagramData = null;
+        this.init();
+      }
+
+      async init() {
+        this.setupEventListeners();
+        this.setupTheme();
+        this.initMermaid();
+        this.setupBackToTop();
+        await this.loadInitialData();
+      }
+
+      initMermaid() {
+        // Initialize Mermaid with proper configuration
+        if (typeof mermaid !== 'undefined') {
+          mermaid.initialize({
+            startOnLoad: false,
+            theme: 'base',
+            themeVariables: {
+              primaryColor: '#3b82f6',
+              primaryTextColor: '#1e293b',
+              primaryBorderColor: '#2563eb',
+              lineColor: '#64748b',
+              secondaryColor: '#f1f5f9',
+              tertiaryColor: '#f8fafc'
+            }
+          });
+        }
+      }
+
+      setupEventListeners() {
+        // Search and filters
+        this.elements.searchInput.addEventListener('input', (e) => {
+          this.state.searchQuery = e.target.value;
+          this.debounceSearch();
+        });
+
+        this.elements.triggerFilter.addEventListener('change', (e) => {
+          this.state.filters.trigger = e.target.value;
+          this.state.currentPage = 1;
+          this.resetAndSearch();
+        });
+
+        this.elements.complexityFilter.addEventListener('change', (e) => {
+          this.state.filters.complexity = e.target.value;
+          this.state.currentPage = 1;
+          this.resetAndSearch();
+        });
+
+        this.elements.categoryFilter.addEventListener('change', (e) => {
+          const selectedCategory = e.target.value;
+          console.log(`Category filter changed to: ${selectedCategory}`);
+          console.log('Current category map size:', this.state.categoryMap.size);
+
+          this.state.filters.category = selectedCategory;
+          this.state.currentPage = 1;
+          this.resetAndSearch();
+        });
+
+        this.elements.activeOnlyFilter.addEventListener('change', (e) => {
+          this.state.filters.activeOnly = e.target.checked;
+          this.state.currentPage = 1;
+          this.resetAndSearch();
+        });
+
+        // Load more
+        this.elements.loadMoreBtn.addEventListener('click', () => {
+          this.loadMoreWorkflows();
+        });
+
+        // Retry
+        this.elements.retryBtn.addEventListener('click', () => {
+          this.loadInitialData();
+        });
+
+        // Theme toggle
+        this.elements.themeToggle.addEventListener('click', () => {
+          this.toggleTheme();
+        });
+
+        // Modal events
+        this.elements.modalClose.addEventListener('click', () => {
+          this.closeModal();
+        });
+
+        this.elements.workflowModal.addEventListener('click', (e) => {
+          if (e.target === this.elements.workflowModal) {
+            this.closeModal();
+          }
+        });
+
+        this.elements.viewJsonBtn.addEventListener('click', () => {
+          this.toggleJsonView();
+        });
+
+        this.elements.viewDiagramBtn.addEventListener('click', () => {
+          this.toggleDiagramView();
+        });
+
+        // Copy button events
+        this.elements.copyJsonBtn.addEventListener('click', () => {
+          this.copyToClipboard(this.currentJsonData, 'copyJsonBtn');
+        });
+
+        this.elements.copyDiagramBtn.addEventListener('click', () => {
+          this.copyToClipboard(this.currentDiagramData, 'copyDiagramBtn');
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            this.closeModal();
+          }
+        });
+      }
+
+      setupBackToTop() {
+        window.addEventListener('scroll', () => {
+          if (window.pageYOffset > 300) {
+            this.elements.backToTop.classList.add('visible');
+          } else {
+            this.elements.backToTop.classList.remove('visible');
+          }
+        });
+
+        this.elements.backToTop.addEventListener('click', () => {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+      }
+
+      setupTheme() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        this.updateThemeToggle(savedTheme);
+      }
+
+      toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        this.updateThemeToggle(newTheme);
+      }
+
+      updateThemeToggle(theme) {
+        this.elements.themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+      }
+
+      debounceSearch() {
+        clearTimeout(this.searchDebounceTimer);
+        this.searchDebounceTimer = setTimeout(() => {
+          this.state.currentPage = 1;
+          this.resetAndSearch();
+        }, 300);
+      }
+
+      async apiCall(endpoint, options = {}) {
+        const response = await fetch(`/api${endpoint}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            ...options.headers
+          },
+          ...options
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        return response.json();
+      }
+
+      async loadInitialData() {
+        this.showState('loading');
+
+        try {
+          // Load categories first, then stats and workflows
+          console.log('Loading categories...');
+          await this.loadCategories();
+
+          console.log('Categories loaded, populating filter...');
+          this.populateCategoryFilter();
+
+          // Load stats and workflows in parallel
+          console.log('Loading stats and workflows...');
+          const [stats] = await Promise.all([
+            this.apiCall('/stats'),
+            this.loadWorkflows(true)
+          ]);
+
+          this.updateStatsDisplay(stats);
+          console.log('Initial data loading complete');
+        } catch (error) {
+          console.error('Error during initial data loading:', error);
+          this.showError('Failed to load data: ' + error.message);
+        }
+      }
+
+      async loadCategories() {
+        try {
+          console.log('Loading categories from API...');
+
+          // Load categories and mappings in parallel from API
+          const [categoriesResponse, mappingsResponse] = await Promise.all([
+            this.apiCall('/categories'),
+            this.apiCall('/category-mappings')
+          ]);
+
+          // Set categories from API
+          this.state.categories = categoriesResponse.categories || ['Uncategorized'];
+
+          // Build category map from API mappings
+          const categoryMap = new Map();
+          const mappings = mappingsResponse.mappings || {};
+
+          Object.entries(mappings).forEach(([filename, category]) => {
+            categoryMap.set(filename, category || 'Uncategorized');
+          });
+
+          this.state.categoryMap = categoryMap;
+
+          console.log(`Successfully loaded ${this.state.categories.length} categories from API:`, this.state.categories);
+          console.log(`Loaded ${categoryMap.size} category mappings from API`);
+
+          return { categories: this.state.categories, mappings: mappings };
+        } catch (error) {
+          console.error('Failed to load categories from API:', error);
+          // Set default categories if loading fails
+          this.state.categories = ['Uncategorized'];
+          this.state.categoryMap = new Map();
+          return { categories: this.state.categories, mappings: {} };
+        }
+      }
+
+      populateCategoryFilter() {
+        const select = this.elements.categoryFilter;
+
+        if (!select) {
+          console.error('Category filter element not found');
+          return;
+        }
+
+        console.log('Populating category filter with:', this.state.categories);
+
+        // Clear existing options except "All Categories"
+        while (select.children.length > 1) {
+          select.removeChild(select.lastChild);
+        }
+
+        if (this.state.categories.length === 0) {
+          console.warn('No categories available to populate filter');
+          return;
+        }
+
+        // Add categories in alphabetical order
+        this.state.categories.forEach(category => {
+          const option = document.createElement('option');
+          option.value = category;
+          option.textContent = category;
+          select.appendChild(option);
+          console.log(`Added category option: ${category}`);
+        });
+
+        console.log(`Category filter populated with ${select.options.length - 1} categories`);
+      }
+
+      async loadWorkflows(reset = false) {
+        if (reset) {
+          this.state.currentPage = 1;
+          this.state.workflows = [];
+        }
+
+        this.state.isLoading = true;
+
+        try {
+          // If category filtering is active, we need to load all workflows to filter properly
+          const needsAllWorkflows = this.state.filters.category !== 'all' && reset;
+
+          let allWorkflows = [];
+          let totalCount = 0;
+          let totalPages = 1;
+
+          if (needsAllWorkflows) {
+            // Load all workflows in batches for category filtering
+            console.log('Loading all workflows for category filtering...');
+            allWorkflows = await this.loadAllWorkflowsForCategoryFiltering();
+
+            // Apply client-side category filtering
+            console.log(`Filtering ${allWorkflows.length} workflows for category: ${this.state.filters.category}`);
+            console.log('Category map size:', this.state.categoryMap.size);
+
+            let matchCount = 0;
+            const filteredWorkflows = allWorkflows.filter(workflow => {
+              const workflowCategory = this.getWorkflowCategory(workflow.filename);
+              const matches = workflowCategory === this.state.filters.category;
+
+              // Debug: log first few matches/non-matches
+              if (matchCount < 5 || (!matches && matchCount < 3)) {
+                console.log(`${workflow.filename}: ${workflowCategory} ${matches ? '===' : '!=='} ${this.state.filters.category}`);
+              }
+
+              if (matches) matchCount++;
+
+              return matches;
+            });
+
+            console.log(`Filtered from ${allWorkflows.length} to ${filteredWorkflows.length} workflows`);
+            allWorkflows = filteredWorkflows;
+            totalCount = filteredWorkflows.length;
+            totalPages = 1; // All results loaded, no pagination needed
+          } else {
+            // Normal pagination
+            const params = new URLSearchParams({
+              q: this.state.searchQuery,
+              trigger: this.state.filters.trigger,
+              complexity: this.state.filters.complexity,
+              active_only: this.state.filters.activeOnly,
+              page: this.state.currentPage,
+              per_page: this.state.perPage
+            });
+
+            const response = await this.apiCall(`/workflows?${params}`);
+            allWorkflows = response.workflows;
+            totalCount = response.total;
+            totalPages = response.pages;
+          }
+
+          if (reset) {
+            this.state.workflows = allWorkflows;
+            this.state.totalCount = totalCount;
+            this.state.totalPages = totalPages;
+          } else {
+            this.state.workflows.push(...allWorkflows);
+          }
+
+          this.updateUI();
+
+        } catch (error) {
+          this.showError('Failed to load workflows: ' + error.message);
+        } finally {
+          this.state.isLoading = false;
+        }
+      }
+
+      async loadAllWorkflowsForCategoryFiltering() {
+        const allWorkflows = [];
+        let currentPage = 1;
+        const maxPerPage = 100; // API limit
+
+        while (true) {
+          const params = new URLSearchParams({
+            q: this.state.searchQuery,
+            trigger: this.state.filters.trigger,
+            complexity: this.state.filters.complexity,
+            active_only: this.state.filters.activeOnly,
+            page: currentPage,
+            per_page: maxPerPage
+          });
+
+          const response = await this.apiCall(`/workflows?${params}`);
+          allWorkflows.push(...response.workflows);
+
+          console.log(`Loaded page ${currentPage}/${response.pages} (${response.workflows.length} workflows)`);
+
+          if (currentPage >= response.pages) {
+            break;
+          }
+
+          currentPage++;
+        }
+
+        console.log(`Loaded total of ${allWorkflows.length} workflows for filtering`);
+        return allWorkflows;
+      }
+
+      getWorkflowCategory(filename) {
+        const category = this.state.categoryMap.get(filename);
+        const result = category && category.trim() ? category : 'Uncategorized';
+        return result;
+      }
+
+      async loadMoreWorkflows() {
+        if (this.state.currentPage >= this.state.totalPages) return;
+
+        this.state.currentPage++;
+        await this.loadWorkflows(false);
+      }
+
+      resetAndSearch() {
+        this.loadWorkflows(true);
+      }
+
+      updateUI() {
+        this.updateResultsCount();
+        this.renderWorkflows();
+        this.updateLoadMoreButton();
+
+        if (this.state.workflows.length === 0) {
+          this.showState('no-results');
+        } else {
+          this.showState('content');
+        }
+      }
+
+      updateStatsDisplay(stats) {
+        this.elements.totalCount.textContent = stats.total.toLocaleString();
+        this.elements.activeCount.textContent = stats.active.toLocaleString();
+        this.elements.nodeCount.textContent = stats.total_nodes.toLocaleString();
+        this.elements.integrationCount.textContent = stats.unique_integrations.toLocaleString();
+      }
+
+      updateResultsCount() {
+        const count = this.state.totalCount;
+        const query = this.state.searchQuery;
+        const category = this.state.filters.category;
+
+        let text = `${count.toLocaleString()} workflows`;
+
+        if (query && category !== 'all') {
+          text += ` found for "${query}" in "${category}"`;
+        } else if (query) {
+          text += ` found for "${query}"`;
+        } else if (category !== 'all') {
+          text += ` in "${category}"`;
+        }
+
+        this.elements.resultsCount.textContent = text;
+      }
+
+      renderWorkflows() {
+        const html = this.state.workflows.map(workflow => this.createWorkflowCard(workflow)).join('');
+        this.elements.workflowGrid.innerHTML = html;
+
+        // Add click handlers to cards
+        this.elements.workflowGrid.querySelectorAll('.workflow-card').forEach((card, index) => {
+          card.addEventListener('click', () => {
+            this.openWorkflowDetail(this.state.workflows[index]);
+          });
+        });
+      }
+
+      createWorkflowCard(workflow) {
+        const statusClass = workflow.active ? 'status-active' : 'status-inactive';
+        const complexityClass = `complexity-${workflow.complexity}`;
+        const category = this.getWorkflowCategory(workflow.filename);
+
+        const integrations = workflow.integrations.slice(0, 5).map(integration =>
+          `<span class="integration-tag">${this.escapeHtml(integration)}</span>`
+        ).join('');
+
+        const moreIntegrations = workflow.integrations.length > 5
+          ? `<span class="integration-tag">+${workflow.integrations.length - 5}</span>`
+          : '';
+
+        return `
+                    <div class="workflow-card" data-filename="${workflow.filename}">
+                        <div class="workflow-header">
+                            <div class="workflow-meta">
+                                <div class="status-dot ${statusClass}"></div>
+                                <div class="complexity-dot ${complexityClass}"></div>
+                                <span>${workflow.node_count} nodes</span>
+                                <span class="category-badge">${this.escapeHtml(category)}</span>
+                            </div>
+                            <span class="trigger-badge">${this.escapeHtml(workflow.trigger_type)}</span>
+                        </div>
+                        
+                        <h3 class="workflow-title">${this.escapeHtml(workflow.name)}</h3>
+                        <p class="workflow-description">${this.escapeHtml(workflow.description)}</p>
+                        
+                        ${workflow.integrations.length > 0 ? `
+                            <div class="workflow-integrations">
+                                <h4 class="integrations-title">Integrations (${workflow.integrations.length})</h4>
+                                <div class="integrations-list">
+                                    ${integrations}
+                                    ${moreIntegrations}
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+      }
+
+      async openWorkflowDetail(workflow) {
+        this.currentWorkflow = workflow;
+        this.elements.modalTitle.textContent = workflow.name;
+        this.elements.modalDescription.textContent = workflow.description;
+
+        // Update stats
+        const category = this.getWorkflowCategory(workflow.filename);
+        this.elements.modalStats.innerHTML = `
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                        <div><strong>Status:</strong> ${workflow.active ? 'Active' : 'Inactive'}</div>
+                        <div><strong>Trigger:</strong> ${workflow.trigger_type}</div>
+                        <div><strong>Complexity:</strong> ${workflow.complexity}</div>
+                        <div><strong>Nodes:</strong> ${workflow.node_count}</div>
+                        <div><strong>Category:</strong> ${this.escapeHtml(category)}</div>
+                    </div>
+                `;
+
+        // Update integrations
+        if (workflow.integrations.length > 0) {
+          this.elements.modalIntegrations.innerHTML = workflow.integrations
+            .map(integration => `<span class="integration-tag">${this.escapeHtml(integration)}</span>`)
+            .join(' ');
+        } else {
+          this.elements.modalIntegrations.textContent = 'No integrations found';
+        }
+
+        // Set download link
+        this.elements.downloadBtn.href = `/api/workflows/${workflow.filename}/download`;
+        this.elements.downloadBtn.download = workflow.filename;
+
+        // Reset view states
+        this.elements.jsonSection.classList.add('hidden');
+        this.elements.diagramSection.classList.add('hidden');
+
+        this.elements.workflowModal.classList.remove('hidden');
+      }
+
+      closeModal() {
+        this.elements.workflowModal.classList.add('hidden');
+        this.currentWorkflow = null;
+        this.currentJsonData = null;
+        this.currentDiagramData = null;
+
+        // Reset button states
+        this.elements.viewJsonBtn.textContent = '📄 View JSON';
+        this.elements.viewDiagramBtn.textContent = '📊 View Diagram';
+
+        // Reset copy button states
+        this.resetCopyButton('copyJsonBtn');
+        this.resetCopyButton('copyDiagramBtn');
+      }
+
+      async toggleJsonView() {
+        if (!this.currentWorkflow) return;
+
+        const isVisible = !this.elements.jsonSection.classList.contains('hidden');
+
+        if (isVisible) {
+          this.elements.jsonSection.classList.add('hidden');
+          this.elements.viewJsonBtn.textContent = '📄 View JSON';
+        } else {
+          try {
+            this.elements.jsonViewer.textContent = 'Loading...';
+            this.elements.jsonSection.classList.remove('hidden');
+            this.elements.viewJsonBtn.textContent = '📄 Hide JSON';
+
+            const data = await this.apiCall(`/workflows/${this.currentWorkflow.filename}`);
+            const jsonString = JSON.stringify(data.raw_json, null, 2);
+            this.currentJsonData = jsonString;
+            this.elements.jsonViewer.textContent = jsonString;
+          } catch (error) {
+            this.elements.jsonViewer.textContent = 'Error loading JSON: ' + error.message;
+            this.currentJsonData = null;
+          }
+        }
+      }
+
+      async toggleDiagramView() {
+        if (!this.currentWorkflow) return;
+
+        const isVisible = !this.elements.diagramSection.classList.contains('hidden');
+
+        if (isVisible) {
+          this.elements.diagramSection.classList.add('hidden');
+          this.elements.viewDiagramBtn.textContent = '📊 View Diagram';
+        } else {
+          try {
+            this.elements.diagramViewer.textContent = 'Loading diagram...';
+            this.elements.diagramSection.classList.remove('hidden');
+            this.elements.viewDiagramBtn.textContent = '📊 Hide Diagram';
+
+            const data = await this.apiCall(`/workflows/${this.currentWorkflow.filename}/diagram`);
+            this.currentDiagramData = data.diagram;
+
+            // Create a Mermaid diagram that will be rendered
+            this.elements.diagramViewer.innerHTML = `
+                            <pre class="mermaid">${data.diagram}</pre>
+                        `;
+
+            // Re-initialize Mermaid for the new diagram
+            if (typeof mermaid !== 'undefined') {
+              mermaid.init(undefined, this.elements.diagramViewer.querySelector('.mermaid'));
+            }
+          } catch (error) {
+            this.elements.diagramViewer.textContent = 'Error loading diagram: ' + error.message;
+            this.currentDiagramData = null;
+          }
+        }
+      }
+
+      updateLoadMoreButton() {
+        const hasMore = this.state.currentPage < this.state.totalPages;
+
+        if (hasMore && this.state.workflows.length > 0) {
+          this.elements.loadMoreContainer.classList.remove('hidden');
+        } else {
+          this.elements.loadMoreContainer.classList.add('hidden');
+        }
+      }
+
+      showState(state) {
+        // Hide all states
+        this.elements.loadingState.classList.add('hidden');
+        this.elements.errorState.classList.add('hidden');
+        this.elements.noResultsState.classList.add('hidden');
+        this.elements.workflowGrid.classList.add('hidden');
+
+        // Show the requested state
+        switch (state) {
+          case 'loading':
+            this.elements.loadingState.classList.remove('hidden');
+            break;
+          case 'error':
+            this.elements.errorState.classList.remove('hidden');
+            break;
+          case 'no-results':
+            this.elements.noResultsState.classList.remove('hidden');
+            break;
+          case 'content':
+            this.elements.workflowGrid.classList.remove('hidden');
+            break;
+        }
+      }
+
+      showError(message) {
+        this.elements.errorMessage.textContent = message;
+        this.showState('error');
+      }
+
+      escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      async copyToClipboard(text, buttonId) {
+        if (!text) {
+          console.warn('No content to copy');
+          return;
+        }
+
+        try {
+          await navigator.clipboard.writeText(text);
+          this.showCopySuccess(buttonId);
+        } catch (error) {
+          // Fallback for older browsers
+          this.fallbackCopyToClipboard(text, buttonId);
+        }
+      }
+
+      fallbackCopyToClipboard(text, buttonId) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+          document.execCommand('copy');
+          this.showCopySuccess(buttonId);
+        } catch (error) {
+          console.error('Failed to copy text: ', error);
+        } finally {
+          document.body.removeChild(textArea);
+        }
+      }
+
+      showCopySuccess(buttonId) {
+        const button = document.getElementById(buttonId);
+        if (!button) return;
+
+        const originalText = button.innerHTML;
+        button.innerHTML = '✅ Copied!';
+        button.classList.add('copied');
+
+        setTimeout(() => {
+          button.innerHTML = originalText;
+          button.classList.remove('copied');
+        }, 2000);
+      }
+
+      resetCopyButton(buttonId) {
+        const button = document.getElementById(buttonId);
+        if (!button) return;
+
+        button.innerHTML = '📋 Copy';
+        button.classList.remove('copied');
+      }
+    }
+
+    // Initialize the app
+    document.addEventListener('DOMContentLoaded', () => {
+      window.workflowApp = new WorkflowApp();
+    });
+  </script>
+</body>
+
+</html>
