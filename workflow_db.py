@@ -12,6 +12,7 @@ import datetime
 import hashlib
 from typing import Dict, List, Any, Optional, Tuple
 from pathlib import Path
+import logging
 
 class WorkflowDatabase:
     """High-performance SQLite database for workflow metadata and search."""
