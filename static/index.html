@@ -1225,62 +1225,65 @@
         display: block;
       }
 
-     .controls {
-  position: fixed;
-  top: 66px;
-  left: 0;
-  bottom: 0;
-  width: var(--sidebar-width);
-  z-index: 200;
-  padding: 1.25rem 1rem;
-  border-right: 1px solid var(--border);
-  border-bottom: none;
-  border-radius: 0;
-  box-shadow: var(--shadow-md);
-  background: linear-gradient(180deg, var(--bg-secondary), var(--bg-tertiary));
-  overflow-y: auto;
-  overflow-x: hidden; /* prevent horizontal scrollbar */
-}
+      .controls {
+        position: fixed;
+        top: 66px;
+        left: 0;
+        bottom: 0;
+        width: var(--sidebar-width);
+        z-index: 200;
+        padding: 1.25rem 1rem;
+        border-right: 1px solid var(--border);
+        border-bottom: none;
+        border-radius: 0;
+        box-shadow: var(--shadow-md);
+        background: linear-gradient(180deg, var(--bg-secondary), var(--bg-tertiary));
+        overflow-y: auto;
+        overflow-x: hidden;
+        /* prevent horizontal scrollbar */
+      }
 
-.controls > .container {
-  max-width: 100%;
-  padding: 0 0.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem; /* spacing between blocks */
-}
+      .controls>.container {
+        max-width: 100%;
+        padding: 0 0.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        /* spacing between blocks */
+      }
 
-/* Stats section */
-.stats {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 1rem;
-}
+      /* Stats section */
+      .stats {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 1rem;
+      }
 
-.stat {
-  flex: 1 1 calc(50% - 1rem); /* two per row */
-  background: var(--bg-secondary);
-  border-radius: 0.8rem;
-  padding: 1rem;
-  text-align: center;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-  border: 1px solid var(--border-light);
-}
+      .stat {
+        flex: 1 1 calc(50% - 1rem);
+        /* two per row */
+        background: var(--bg-secondary);
+        border-radius: 0.8rem;
+        padding: 1rem;
+        text-align: center;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+        border: 1px solid var(--border-light);
+      }
 
-.stat-number {
-  display: block;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--primary-600);
-}
+      .stat-number {
+        display: block;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--primary-600);
+      }
 
-.stat-label {
-  display: block;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-top: 0.3rem;
-}
+      .stat-label {
+        display: block;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-top: 0.3rem;
+      }
 
       .search-section {
         margin-bottom: 0.5rem;
@@ -1541,6 +1544,9 @@
     <!-- Main Content -->
     <div class="controls">
       <div class="container">
+        <div class="results-info">
+          <span id="resultsCount">Loading workflows...</span>
+        </div>
         <div class="stats">
           <div class="stat">
             <span class="stat-number" id="totalCount">0</span>
@@ -1606,9 +1612,7 @@
           <button id="themeToggle" class="theme-toggle">🌙</button>
         </div>
 
-        <div class="results-info">
-          <span id="resultsCount">Loading workflows...</span>
-        </div>
+
       </div>
     </div>
     <main class="main">

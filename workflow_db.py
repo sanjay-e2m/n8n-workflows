@@ -10,20 +10,85 @@ import os
 import glob
 import datetime
 import hashlib
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Dict, List, Any, Optional, Tuple, NamedTuple
 from pathlib import Path
 import logging
+from dataclasses import dataclass
+from enum import Enum
+
+from dataclasses import dataclass
+from enum import Enum
+
+class TriggerType(Enum):
+    """Workflow trigger types."""
+    MANUAL = "Manual"
+    WEBHOOK = "Webhook" 
+    SCHEDULED = "Scheduled"
+    COMPLEX = "Complex"
+
+class ComplexityLevel(Enum):
+    """Workflow complexity levels."""
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+
+@dataclass
+class WorkflowMetadata:
+    """Structured workflow metadata."""
+    filename: str
+    name: str
+    workflow_id: str
+    active: bool
+    node_count: int
+    trigger_type: TriggerType
+    complexity: ComplexityLevel
+    integrations: List[str]
+    description: str
+    file_hash: str
+    file_size: int
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+    tags: List[str] = None
+    
+    def __post_init__(self):
+        if self.tags is None:
+            self.tags = []
+
+class WorkflowAnalysisError(Exception):
+    """Custom exception for workflow analysis errors."""
+    pass
+
+class DatabaseConnectionError(Exception):
+    """Custom exception for database connection issues."""
+    pass
 
 class WorkflowDatabase:
     """High-performance SQLite database for workflow metadata and search."""
     
     def __init__(self, db_path: str = None):
+        # Configure structured logging
+        self.logger = logging.getLogger(__name__)
+        if not self.logger.handlers:
+            handler = logging.StreamHandler()
+            formatter = logging.Formatter(
+                '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+            )
+            handler.setFormatter(formatter)
+            self.logger.addHandler(handler)
+            self.logger.setLevel(logging.INFO)
+        
         # Use environment variable if no path provided
         if db_path is None:
             db_path = os.environ.get('WORKFLOW_DB_PATH', 'workflows.db')
         self.db_path = db_path
         self.workflows_dir = "workflows"
-        self.init_database()
+        
+        try:
+            self.init_database()
+            self.logger.info(f"Database initialized successfully at {self.db_path}")
+        except Exception as e:
+            self.logger.error(f"Failed to initialize database: {e}")
+            raise DatabaseConnectionError(f"Database initialization failed: {e}")
     
     def init_database(self):
         """Initialize SQLite database with optimized schema and indexes."""
@@ -148,14 +213,35 @@ class WorkflowDatabase:
         
         return ' '.join(readable_parts)
     
-    def analyze_workflow_file(self, file_path: str) -> Optional[Dict[str, Any]]:
-        """Analyze a single workflow file and extract metadata."""
+    def analyze_workflow_file(self, file_path: str) -> Optional[WorkflowMetadata]:
+        """Analyze a single workflow file and extract metadata.
+        
+        Args:
+            file_path: Path to the workflow JSON file
+            
+        Returns:
+            WorkflowMetadata object or None if analysis fails
+            
+        Raises:
+            WorkflowAnalysisError: If file analysis fails
+        """
+        if not file_path or not os.path.exists(file_path):
+            self.logger.error(f"Invalid file path: {file_path}")
+            raise WorkflowAnalysisError(f"File does not exist: {file_path}")
+            
+        if not file_path.endswith('.json'):
+            self.logger.warning(f"Skipping non-JSON file: {file_path}")
+            return None
+            
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
         except (json.JSONDecodeError, UnicodeDecodeError) as e:
-            print(f"Error reading {file_path}: {str(e)}")
-            return None
+            self.logger.error(f"Error reading {file_path}: {str(e)}")
+            raise WorkflowAnalysisError(f"Failed to parse JSON: {e}")
+        except IOError as e:
+            self.logger.error(f"IO error reading {file_path}: {str(e)}")
+            raise WorkflowAnalysisError(f"File read error: {e}")
         
         filename = os.path.basename(file_path)
         file_size = os.path.getsize(file_path)
