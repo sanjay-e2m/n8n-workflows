@@ -316,7 +316,7 @@
       display: flex;
       align-items: center;
       gap: 1rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       position: relative;
     }
 
@@ -373,50 +373,99 @@
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      padding: 0.875rem 1.125rem;
-      background: var(--bg-tertiary);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-light);
-      transition: var(--transition-base);
+      padding: 1rem 1.25rem;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-xl);
+      border: 2px solid var(--border-light);
+      transition: var(--transition-smooth);
+      box-shadow: var(--shadow-sm);
+      backdrop-filter: blur(10px);
     }
 
     .filter-group:hover {
+      background: var(--bg-tertiary);
+      border-color: var(--primary-200);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .filter-group:focus-within {
+      border-color: var(--primary-500);
+      box-shadow: 0 0 0 3px rgb(14 165 233 / 0.1), var(--shadow-lg);
       background: var(--bg-secondary);
-      border-color: var(--border);
-      box-shadow: var(--shadow-sm);
     }
 
     .filter-group label {
       font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--text-secondary);
+      font-weight: 700;
+      color: var(--text);
       white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .filter-group label::after {
+      color: var(--text-muted);
+      font-weight: 400;
     }
 
     .filter-group select {
-      padding: 0.625rem 0.875rem;
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-md);
-      background: var(--bg);
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      background: var(--bg-secondary);
       color: var(--text);
       font-size: 0.875rem;
       font-weight: 500;
       cursor: pointer;
-      transition: var(--transition-base);
-      min-width: 130px;
+      transition: var(--transition-smooth);
+      min-width: 140px;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 1rem;
+      padding-right: 2.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .filter-group select:hover {
+      border-color: var(--primary-300);
+      background-color: var(--bg-tertiary);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
     }
 
     .filter-group select:focus {
       outline: none;
       border-color: var(--primary-500);
-      box-shadow: 0 0 0 3px rgb(14 165 233 / 0.1);
+      box-shadow: 0 0 0 3px rgb(14 165 233 / 0.15), var(--shadow-md);
+      background-color: var(--bg-secondary);
+    }
+
+    .filter-group select:active {
+      transform: translateY(0);
     }
 
     .filter-group input[type="checkbox"] {
-      width: 1.125rem;
-      height: 1.125rem;
+      width: 1.25rem;
+      height: 1.25rem;
       accent-color: var(--primary-500);
       cursor: pointer;
+      border-radius: var(--radius-sm);
+      transition: var(--transition-base);
+    }
+
+    .filter-group input[type="checkbox"]:hover {
+      transform: scale(1.1);
+    }
+
+    .filter-group input[type="checkbox"]:focus {
+      outline: 2px solid var(--primary-500);
+      outline-offset: 2px;
     }
 
     .theme-toggle {
@@ -1211,29 +1260,30 @@
 
 .stat {
   flex: 1 1 calc(50% - 1rem); /* two per row */
-  background: #fff;
+  background: var(--bg-secondary);
   border-radius: 0.8rem;
   padding: 1rem;
   text-align: center;
   box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  border: 1px solid var(--border-light);
 }
 
 .stat-number {
   display: block;
   font-size: 1.4rem;
   font-weight: 700;
-  color: var(--primary, #0a66c2);
+  color: var(--primary-600);
 }
 
 .stat-label {
   display: block;
   font-size: 0.85rem;
-  color: #555;
+  color: var(--text-muted);
   margin-top: 0.3rem;
 }
 
       .search-section {
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
       }
 
       .filter-section {
@@ -1518,7 +1568,7 @@
 
         <div class="filter-section">
           <div class="filter-group">
-            <label for="triggerFilter">Trigger:</label>
+            <label for="triggerFilter">Trigger :</label>
             <select id="triggerFilter">
               <option value="all">All Types</option>
               <option value="Webhook">Webhook</option>
@@ -1529,7 +1579,7 @@
           </div>
 
           <div class="filter-group">
-            <label for="complexityFilter">Complexity:</label>
+            <label for="complexityFilter">Complexity :</label>
             <select id="complexityFilter">
               <option value="all">All Levels</option>
               <option value="low">Low (≤5 nodes)</option>
@@ -1539,7 +1589,7 @@
           </div>
 
           <div class="filter-group">
-            <label for="categoryFilter">Category:</label>
+            <label for="categoryFilter">Category :</label>
             <select id="categoryFilter">
               <option value="all">All Categories</option>
               <!-- Categories will be populated dynamically -->
